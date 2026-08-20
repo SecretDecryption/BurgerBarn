@@ -24,7 +24,30 @@
         <nav aria-label="Primary navigation">
           <a href="#menu">Menu</a>
           <a href="#story">Our story</a>
-          <a class="nav-button" href="#visit">Visit us</a>
+          <a class="nav-button desktop-visit-link" href="#visit">Visit us</a>
+          <div class="mobile-map-picker">
+            <button id="map-picker-open" class="nav-button map-picker-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">Visit us</button>
+            <div id="map-choice-layer" class="map-choice-layer" hidden>
+              <button class="map-choice-backdrop" type="button" aria-label="Close map choices" data-close-map-picker></button>
+              <div class="map-choice-sheet" role="dialog" aria-modal="true" aria-labelledby="map-choice-title">
+                <button id="map-picker-close" class="map-choice-close" type="button" aria-label="Close map choices" data-close-map-picker>×</button>
+              <div class="map-choice-heading">
+                <span>Get directions</span>
+                  <b id="map-choice-title">Choose your map app</b>
+              </div>
+              <a class="map-choice" href="https://maps.apple.com/?address=3000%204th%20Line,%20Six%20Nations%20of%20the%20Grand%20River,%20ON,%20Canada" target="_blank" rel="noreferrer">
+                <span class="map-app-icon apple-icon"></span>
+                <span><b>Apple Maps</b><small>Open on your iPhone</small></span>
+                <i>↗</i>
+              </a>
+              <a class="map-choice" href="https://www.google.com/maps/search/?api=1&amp;query=Burger+Barn+3000+4th+Line+Six+Nations+of+the+Grand+River" target="_blank" rel="noreferrer">
+                <span class="map-app-icon google-icon">G</span>
+                <span><b>Google Maps</b><small>Open in Google Maps</small></span>
+                <i>↗</i>
+              </a>
+              </div>
+            </div>
+          </div>
         </nav>
       </header>
 
@@ -188,10 +211,52 @@
       </section>
 
       <footer>
-        <a class="footer-brand" href="#top"><img src="/burger-barn-logo-hd.png" alt=""><span>Burger Barn</span></a>
-        <p>Big burgers. Barn-sized flavour.</p>
-        <a href="#top">Back to top ↑</a>
+        <div class="footer-map-shell">
+          <div class="footer-map-copy">
+            <p class="eyebrow light">Find your way here</p>
+            <h2>Meet us<br>at the barn.</h2>
+            <address>3000 4th Line<br>Six Nations of the Grand River</address>
+            <div class="footer-map-links">
+              <a href="https://maps.apple.com/?address=3000%204th%20Line,%20Six%20Nations%20of%20the%20Grand%20River,%20ON,%20Canada" target="_blank" rel="noreferrer">Apple Maps ↗</a>
+              <a href="https://www.google.com/maps/search/?api=1&amp;query=Burger+Barn+3000+4th+Line+Six+Nations+of+the+Grand+River" target="_blank" rel="noreferrer">Google Maps ↗</a>
+            </div>
+          </div>
+          <div class="footer-map-frame">
+            <iframe title="Map showing Burger Barn at 3000 4th Line" src="https://www.google.com/maps?q=Burger%20Barn%203000%204th%20Line%20Six%20Nations%20of%20the%20Grand%20River&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <a class="footer-brand" href="#top"><img src="/burger-barn-logo-hd.png" alt=""><span>Burger Barn</span></a>
+          <p>Big burgers. Barn-sized flavour.</p>
+          <a href="#top">Back to top ↑</a>
+        </div>
       </footer>
     </main>
+    <script>
+      (() => {
+        const trigger = document.getElementById("map-picker-open");
+        const layer = document.getElementById("map-choice-layer");
+        const closeButton = document.getElementById("map-picker-close");
+        if (!trigger || !layer || !closeButton) return;
+
+        const openPicker = () => {
+          layer.hidden = false;
+          trigger.setAttribute("aria-expanded", "true");
+          closeButton.focus();
+        };
+        const closePicker = () => {
+          layer.hidden = true;
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.focus();
+        };
+
+        trigger.addEventListener("click", openPicker);
+        layer.querySelectorAll("[data-close-map-picker]").forEach((button) => button.addEventListener("click", closePicker));
+        layer.querySelectorAll(".map-choice").forEach((link) => link.addEventListener("click", () => { layer.hidden = true; trigger.setAttribute("aria-expanded", "false"); }));
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !layer.hidden) closePicker();
+        });
+      })();
+    </script>
   </body>
 </html>
