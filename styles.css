@@ -141,11 +141,8 @@ h1 em { color: var(--barn-red); font-style: normal; }
 
 .ticker {
   min-height: 62px;
-  padding: 16px clamp(22px, 5vw, 70px);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 22px;
+  padding: 0;
+  overflow: hidden;
   background: var(--ink);
   color: white;
   text-transform: uppercase;
@@ -153,7 +150,15 @@ h1 em { color: var(--barn-red); font-style: normal; }
   font-weight: 900;
   letter-spacing: .1em;
 }
+.ticker-track { width: max-content; display: flex; animation: ticker-scroll 24s linear infinite; }
+.ticker-group { min-width: 100vw; min-height: 62px; padding: 16px clamp(22px, 5vw, 70px); display: flex; align-items: center; justify-content: space-around; gap: 28px; white-space: nowrap; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
 .ticker i { color: #f2c14e; font-style: normal; }
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 .menu-section {
   padding: 112px clamp(22px, 6vw, 94px) 104px;
@@ -322,7 +327,7 @@ a:focus-visible { outline: 3px solid #f2c14e; outline-offset: 4px; }
   .hero-sign strong { font-size: 36px; }
   .hero-seal { width: 82px; height: 82px; right: 3%; top: 36px; font-size: 8px; }
   .hand-note { font-size: 19px; bottom: 35px; }
-  .ticker { justify-content: flex-start; overflow: hidden; white-space: nowrap; }
+  .ticker-group { justify-content: flex-start; padding-inline: 28px; gap: 28px; }
   .menu-section { padding-block: 76px 70px; }
   .menu-grid { grid-template-columns: 1fr; }
   .menu-card { min-height: 250px; }
@@ -349,4 +354,5 @@ a:focus-visible { outline: 3px solid #f2c14e; outline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; }
+  .ticker-track { animation: none; }
 }
